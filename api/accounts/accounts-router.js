@@ -11,8 +11,13 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", md.checkAccountId, (req, res, next) => {
-  res.json(req.account);
+router.get("/:id", md.checkAccountId, async (req, res, next) => {
+  try {
+    const account = await Account.getById(req.params.id);
+    res.json(account);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post(
@@ -32,20 +37,21 @@ router.post(
 router.put(
   "/:id",
   md.checkAccountId,
-  md.checkAccountNameUnique,
   md.checkAccountPayload,
-  (req, res, next) => {
+  async (req, res, next) => {
     try {
-      res.json("update accounts");
+      const updated = await Account.updateById(req.params.id, req.body);
+      res.json(updated);
     } catch (error) {
       next(error);
     }
   }
 );
 
-router.delete("/:id", md.checkAccountId, (req, res, next) => {
+router.delete("/:id", md.checkAccountId, async (req, res, next) => {
   try {
-    res.json("delete accounts");
+    await Account.deleteById(req.params.id);
+    res.json(req.account);
   } catch (error) {
     next(error);
   }
