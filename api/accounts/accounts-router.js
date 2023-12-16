@@ -22,13 +22,13 @@ router.get("/:id", md.checkAccountId, async (req, res, next) => {
 
 router.post(
   "/",
-  md.checkAccountNameUnique,
   md.checkAccountPayload,
+  md.checkAccountNameUnique,
   async (req, res, next) => {
     try {
       const newAccount = await Account.create({
         name: req.body.name.trim(),
-        budget: req.body.budget
+        budget: req.body.budget,
       });
       res.status(201).json(newAccount);
     } catch (error) {
