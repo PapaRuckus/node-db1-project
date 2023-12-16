@@ -12,13 +12,13 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:id", md.checkAccountId, (req, res, next) => {
-  res.json(req.account)
+  res.json(req.account);
 });
 
 router.post(
   "/",
-  md.checkAccountId,
   md.checkAccountNameUnique,
+  md.checkAccountPayload,
   (req, res, next) => {
     try {
       res.json("post accounts");
